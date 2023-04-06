@@ -7,7 +7,7 @@ import { AuthLayout } from '../layout/AuthLayout';
 export const RegisterPAge = () => {
   return (
     
-   <AuthLayout title='Crear Cuenta'>
+   <AuthLayout title='Crear Cuenta'> {/* tema de la app */}
 
 <form>
           <Grid container>

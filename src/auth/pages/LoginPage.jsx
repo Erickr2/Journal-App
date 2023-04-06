@@ -7,7 +7,7 @@ import { AuthLayout } from '../layout/AuthLayout';
 export const LoginPage = () => {
   return (
     
-   <AuthLayout title='Login'>
+   <AuthLayout title='Login'>  {/* tema de la app */}
 
 <form>
           <Grid container>
