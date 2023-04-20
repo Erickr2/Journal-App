@@ -1,8 +1,13 @@
 import { TurnedInNot } from "@mui/icons-material"
 import { Box, Divider, Drawer, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography } from "@mui/material"
+import { useSelector } from "react-redux"
 
 
 export const SideBar = ({ draweWidth }) => {
+
+    //traigo la data del estado de mi autenticacion 
+    const {displayName} = useSelector( state => state.auth);
+
     return (
         <Box
             component='nav'
@@ -17,7 +22,7 @@ export const SideBar = ({ draweWidth }) => {
 
                 <Toolbar>
                     <Typography variant="h6" noWrap component='div'>
-                        Uri BB
+                        {displayName} 
                     </Typography>
                 </Toolbar>
                 <Divider />
