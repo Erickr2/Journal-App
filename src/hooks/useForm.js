@@ -11,6 +11,11 @@ export const Useform = (initialForm = {}, formValidations = {}) => {
     useEffect( () => {
         createValidators();
     }, [FormState]);
+    //cada que el estado de mi valor inicial cambia, modifica el estado que lleva dentro, es decir cuando la nota cambia
+    useEffect(() => {
+      setFormState( initialForm );
+    }, [initialForm])
+    
 
     //usamos un memo para memorizar el valor del formsate
     const isFormValid = useMemo( () => {

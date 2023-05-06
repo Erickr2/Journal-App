@@ -1,5 +1,8 @@
+import { doc, setDoc } from "firebase/firestore/lite";
 import { loginWithEmailPassword, logoutFirebase, registerByUserEmail, signInWithGoogle } from "../../firebase/providers";
 import { chekingCredentials, login, logout } from "./authSlice"
+import { FirebaseBD } from "../../firebase/config";
+import { clearNotesLogout, setSaving, updateNote } from "../journal/sliceJournal";
 
 //un thunk me sirve para tratar funciones asincronas, en este caso obtengo el dispatch y ejecuto la funcion chekingCredentials que cambia el estado de status a cheking
 export const chekingAuthentication = ( email, password) => {
@@ -53,13 +56,32 @@ export const startLoginWithEmailPassword = ({ email, password}) => {
     
 };
 
-//espera la respuesta de logoutFirebase, y una vez la recibe despacha el logout
+//espera la respuesta de logoutFirebase, y una vez la recibe despacha el logout y elimina la dat que hay en store
 export const startLogout = () => {
     return async( dispatch ) => {
         
         await logoutFirebase();
-
+        dispatch( clearNotesLogout() );//cambia los valores a vacio
         dispatch( logout() );
 
+    }
+}
+
+export const startSaveNote = () => {
+    return async( dispatch , getState) => {
+
+        dispatch(setSaving());
+
+        const { uid } = getState().auth;
+        const { active:note } = getState().journal;
+
+        const noteToFireStore = {...note}; //expando y guardo todas las propiedades de mi nota activa 
+        delete noteToFireStore.id; //alimino el elemento id de mi nota
+
+
+        const docRef = doc(FirebaseBD, `${uid}/Journal1/notas/${note.id}`);//referencia a donde va hacer la inserción
+        await setDoc(docRef, noteToFireStore, {merge: true})//espero la respuesta de la modificacion y mando la referencia, la nota(data), merge me ayuda a mantener los valores que hay en la bd aun y cuanod no vengan en la dat que estoy mandando
+
+        dispatch(updateNote(note)); //llamamos mi reducer para actualizar la nota y le mandamos la nota con la que estamos trabajando, es decir la nota activa
     }
 }

@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FirebaseAuth } from "../firebase/config";
 import { login, logout } from "../store/auth";
+import { startLoadingNotes } from "../store/journal/thunks";
 
 export const useChekAuth = () => {
     //traigo el estado de mi autenticacion
@@ -18,6 +19,7 @@ export const useChekAuth = () => {
             const { uid, email, displayName, photoURL } = user;
             //despacho el login y mando la informacion de mi usuario
             dispatch(login({ uid, displayName, photoURL, email }))
+            dispatch( startLoadingNotes()); //useChekAuth es el primer lugar que sabe si hay o no usuario por lo que aqui hago mi despatch pues se que ya hay un usuario
         });
 
 

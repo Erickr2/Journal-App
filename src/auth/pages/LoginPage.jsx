@@ -43,7 +43,6 @@ export const LoginPage = () => {
     if (!isFormValid) return; //si no es valido el form, no hagas nada para que no mande al back string vacio
     dispatch(startLoginWithEmailPassword(FormState));//despacho mi funcion para crear usuarios y le mando el formstate que tiene toda mi data de registro
 
-    console.log(FormState);
   }
 
   const onGoogleSignIn = () => {
